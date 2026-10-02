@@ -1,0 +1,16 @@
+event_id,date,event
+covid_budget,2020-03-11,Budget 2020 (Covid response)
+furlough,2020-03-20,Furlough scheme announced
+budget_2021,2021-03-03,Budget 2021
+autumn_budget_2021,2021-10-27,Autumn Budget 2021
+energy_package_feb22,2022-02-03,Energy bills package and Bank rate rise
+col_package_may22,2022-05-26,Cost-of-living package and windfall tax
+energy_guarantee,2022-09-08,Energy Price Guarantee
+mini_budget,2022-09-23,Mini-budget (centrepiece anchor)
+mini_budget_reversal,2022-10-17,Statement reversing the mini-budget
+autumn_statement_22,2022-11-17,Autumn Statement 2022
+spring_budget_23,2023-03-15,Spring Budget 2023
+autumn_statement_23,2023-11-22,Autumn Statement 2023
+spring_budget_24,2024-03-06,Spring Budget 2024
+autumn_budget_24,2024-10-30,Autumn Budget 2024
+spring_statement_25,2025-03-26,Spring Statement 2025

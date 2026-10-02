@@ -1,0 +1,15 @@
+{
+  "source": "Dissertation-stage seed rules (dissertation p. 18), as transcribed in Appendix 'Collection Keyword Scheme' of the paper.",
+  "topics": [
+    {"topic": "taxation_and_fiscal_policy", "keywords": ["tax", "VAT", "income tax", "NI", "national insurance", "HMRC", "budget", "chancellor", "Finance Bill", "fiscal", "levy"]},
+    {"topic": "inflation_cost_of_living_prices", "keywords": ["inflation", "CPI", "prices", "cost of living", "food prices", "fuel prices", "energy bills", "price cap", "BoE", "interest rate"]},
+    {"topic": "welfare_benefits_universal_credit", "keywords": ["welfare", "benefits", "Universal Credit", "UC", "DWP", "benefit cap", "means-tested", "child benefit"]},
+    {"topic": "energy_and_utilities", "keywords": ["energy price guarantee", "Ofgem", "electricity bill", "gas bill", "standing charge", "fuel duty"]},
+    {"topic": "housing_and_mortgages", "keywords": ["mortgage", "rent", "landlord", "housing benefit", "stamp duty", "help to buy"]},
+    {"topic": "labour_market", "keywords": ["minimum wage", "national living wage", "pay rise", "pay freeze", "strike", "unemployment"]}
+  ],
+  "priority_when_several_match": ["taxation_and_fiscal_policy", "inflation_cost_of_living_prices", "welfare_benefits_universal_credit", "energy_and_utilities", "housing_and_mortgages", "labour_market"],
+  "negation_rule": "a negation term within three tokens of a polarity keyword flags the post for review",
+  "gazetteer_institutions": ["HM Treasury", "Bank of England", "DWP", "Ofgem", "OBR"],
+  "gazetteer_roles": ["Chancellor", "Prime Minister", "Shadow Chancellor"]
+}
