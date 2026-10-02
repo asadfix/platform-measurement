@@ -5,6 +5,8 @@ Code and materials for the simulation study (Section 7 and Figure 1) of the pape
 Cross-Platform Equivalence of Machine-Labelled Policy Sentiment* (2026; arXiv link
 to be added on posting).
 
+Archived on Zenodo: version 1.0.0 [10.5281/zenodo.23105129](https://doi.org/10.5281/zenodo.23105129); all versions [10.5281/zenodo.23105128](https://doi.org/10.5281/zenodo.23105128).
+
 The simulation has a known ground truth and needs no collected data. A latent daily
 sentiment series reacts to an event; four platforms observe it through different
 measurement functions (an affordance bias plus platform-specific thresholds that
