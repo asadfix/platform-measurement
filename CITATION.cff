@@ -1,0 +1,15 @@
+cff-version: 1.2.0
+message: "If you use this code, please cite it as below."
+title: "platform-measurement: simulation study code for \"Is the Platform Part of the Measurement?\""
+type: software
+version: 1.0.0
+license: MIT
+authors:
+  - family-names: Ikram
+    given-names: Asad
+repository-code: "https://github.com/asadfix/platform-measurement"
+keywords:
+  - measurement equivalence
+  - cross-platform
+  - sentiment analysis
+  - simulation

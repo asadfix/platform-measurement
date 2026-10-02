@@ -1,0 +1,9 @@
+{
+  "title": "platform-measurement: simulation study code for \"Is the Platform Part of the Measurement?\"",
+  "upload_type": "software",
+  "version": "1.0.0",
+  "creators": [{"name": "Ikram, Asad"}],
+  "description": "Code and materials for the simulation study (Section 7 and Figure 1) of the paper \"Is the Platform Part of the Measurement? A Protocol and Simulation Study for Cross-Platform Equivalence of Machine-Labelled Policy Sentiment\" (2026). A known-ground-truth simulation compares a naive pooled cross-platform sentiment index with a measurement-adjusted index; scenario checks, the fifteen UK fiscal policy anchor events and the collection keyword scheme are included. No social media data.",
+  "license": "MIT",
+  "keywords": ["measurement equivalence", "cross-platform", "sentiment analysis", "computational social science", "simulation", "survey mode"]
+}
