@@ -2,7 +2,7 @@ cff-version: 1.2.0
 message: "If you use this code, please cite it as below."
 title: "platform-measurement: simulation study code for \"Is the Platform Part of the Measurement?\""
 type: software
-version: 1.0.0
+version: 1.0.1
 license: MIT
 authors:
   - family-names: Ikram
