@@ -18,6 +18,9 @@ import simulation_study as S
 
 SEED, REPS = 20261201, 500
 
+# (label, platform set, pre-event baseline). The heterogeneity scenarios
+# scale the spread between platforms' measurement functions around the
+# homogeneous case (x0 = identical platforms, x1 = published configuration).
 SCENARIOS = [
     ("published configuration",              S.PLATFORMS,                S.BASELINE),
     ("homogeneous (one unbiased function)",  S.homogeneous(S.PLATFORMS), S.BASELINE),

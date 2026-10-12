@@ -34,6 +34,15 @@ import matplotlib
 matplotlib.use("Agg")
 import matplotlib.pyplot as plt
 
+# ---------------------------------------------------------------------------
+# Generating parameters (fixed before any replication was run)
+# ---------------------------------------------------------------------------
+# Each platform is described by its measurement function and its volume:
+#   bias    affordance bias added to every expression on the platform
+#   thr_lo  expressions below this are coded negative (-1)
+#   thr_hi  expressions above this are coded positive (+1); in between, neutral (0)
+#   base_n  posts per day at day 0
+#   drift   change in posts per day, per day (composition drift)
 # Labels are mnemonic only; these constructed measurement functions
 # assert nothing about the real platforms.
 PLATFORMS = {
@@ -43,13 +52,17 @@ PLATFORMS = {
     "youtube":  (+0.10, -0.30,  0.20,    900,   +1.0),   # positive-leaning thresholds
     "quora":    (+0.20, -0.10,  0.45,    150,    0.0),   # strongly positive-leaning, tiny
 }
-DAYS = 60
-EVENT_DAY = 30
-EVENT_SHIFT = -0.5   # true latent shift at the event
-NOISE_SD = 0.6
+DAYS = 60            # length of the simulated window, in days
+EVENT_DAY = 30       # day the anchor event happens
+EVENT_SHIFT = -0.5   # true latent shift at the event (decays with a 10-day time constant)
+NOISE_SD = 0.6       # standard deviation of individual expression noise
 BASELINE = 0.1       # pre-event latent sentiment
 
 
+# ---------------------------------------------------------------------------
+# Scenario helpers (used by sensitivity.py to build the counterfactual
+# platform sets of Section 7 from the published one)
+# ---------------------------------------------------------------------------
 def homogeneous(platforms):
     """Every platform shares one unbiased, symmetric measurement function;
     volumes and drift are unchanged."""
@@ -63,7 +76,12 @@ def scaled(platforms, k):
             for p, (b, lo, hi, n, d) in platforms.items()}
 
 
+# ---------------------------------------------------------------------------
+# Measurement
+# ---------------------------------------------------------------------------
 def code(y, lo, hi):
+    """Discretise continuous expressions y into -1 / 0 / +1 using a
+    platform's thresholds (lo, hi)."""
     return np.where(y < lo, -1, np.where(y > hi, 1, 0))
 
 
@@ -77,6 +95,8 @@ def inversion_curve(bias, lo, hi, rng, grid_n=301, draws=6000):
 
 
 def inversion_curves(platforms):
+    """Inversion curve for every platform, from a fixed seed (12345) so the
+    adjusted index is identical across runs and scenarios."""
     crng = np.random.default_rng(12345)
     return {p: inversion_curve(b, lo, hi, crng)
             for p, (b, lo, hi, _, _) in platforms.items()}
@@ -87,7 +107,27 @@ def shift(series):
     return series[EVENT_DAY:EVENT_DAY + 10].mean() - series[EVENT_DAY - 10:EVENT_DAY].mean()
 
 
+# ---------------------------------------------------------------------------
+# One replication
+# ---------------------------------------------------------------------------
 def run(seed, curves=None, platforms=None, baseline=BASELINE):
+    """Simulate one 60-day window and return both indices.
+
+    Steps:
+      1. Build the latent truth theta_t: a flat baseline, then a negative
+         shift at EVENT_DAY that decays back over about ten days.
+      2. For every platform and day, draw that day's posts (volume drifts
+         over time), add the platform's bias and noise, and code them.
+      3. NAIVE index: pool all coded values across platforms (a volume-
+         weighted mean of -1/0/+1 codes).
+      4. ADJUSTED index: for each platform, find the latent value whose
+         expected coded mean matches the observed one (inverting the known
+         measurement function), then pool with volume weights.
+
+    Returns a dict with the three series, the event shifts, and the number
+    of "wrong-sign" days, i.e. days on which an index's sign differs from
+    the sign of the latent truth.
+    """
     platforms = PLATFORMS if platforms is None else platforms
     rng = np.random.default_rng(seed)
     theta = baseline * np.ones(DAYS)
@@ -117,7 +157,13 @@ def run(seed, curves=None, platforms=None, baseline=BASELINE):
                 flips_naive=flips_naive, flips_adjusted=flips_adj)
 
 
+# ---------------------------------------------------------------------------
+# Many replications and reporting
+# ---------------------------------------------------------------------------
 def replicate(base_seed, reps, platforms=None, baseline=BASELINE):
+    """Run `reps` replications with seeds base_seed, base_seed+1, ... and
+    return per-replication errors: shift bias (index shift minus true shift)
+    and wrong-sign day counts for both indices."""
     platforms = PLATFORMS if platforms is None else platforms
     curves = inversion_curves(platforms)
     out = [run(base_seed + r, curves, platforms, baseline) for r in range(reps)]
@@ -131,10 +177,13 @@ def replicate(base_seed, reps, platforms=None, baseline=BASELINE):
 
 
 def ci(x):
+    """2.5th and 97.5th percentiles across replications (a percentile
+    spread, not a confidence interval for the mean)."""
     return np.percentile(x, [2.5, 97.5])
 
 
 def report(base_seed, reps):
+    """Print the replication summary quoted in Section 7 of the paper."""
     r = replicate(base_seed, reps)
     nb, ab, fn, fa = r["naive_bias"], r["adjusted_bias"], r["flips_naive"], r["flips_adjusted"]
     print(f"replications             : {reps} (seeds {base_seed} to {base_seed + reps - 1})")
@@ -146,6 +195,7 @@ def report(base_seed, reps):
 
 
 def plot(seed, outfile="fig_simulation_demo.png"):
+    """Draw Figure 1 of the paper from a single replication."""
     r = run(seed)
     print(f"single run seed {seed}: true {r['true_shift']:+.3f}, naive {r['naive_shift']:+.3f}, "
           f"adjusted {r['adjusted_shift']:+.3f}, wrong-sign days naive {r['flips_naive']}, "

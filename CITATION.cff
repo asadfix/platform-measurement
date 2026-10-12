@@ -13,3 +13,14 @@ keywords:
   - cross-platform
   - sentiment analysis
   - simulation
+preferred-citation:
+  type: article
+  title: "Is the Platform Part of the Measurement? A Protocol and Simulation Study for Cross-Platform Equivalence of Machine-Labelled Policy Sentiment"
+  authors:
+    - family-names: Ikram
+      given-names: Asad
+    - family-names: Haig
+      given-names: Ella
+      affiliation: "University of Portsmouth"
+  year: 2026
+  notes: "arXiv preprint, submitted 12 October 2026"
